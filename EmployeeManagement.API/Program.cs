@@ -1,8 +1,8 @@
-using EmployeeManagement.DAL;
-using Microsoft.OpenApi.Models;
-using EmployeeManagement.DAL.Repository;
 using EmployeeManagement.DAL.Data;
+using EmployeeManagement.DAL.Repository;
 using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure EF Core with your chosen provider (MySQL or PostgreSQL)

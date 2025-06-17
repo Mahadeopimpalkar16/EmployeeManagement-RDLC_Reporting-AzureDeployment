@@ -1,6 +1,8 @@
 ﻿using EmployeeManagement.DAL.Data;
 using EmployeeManagement.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Buffers;
 
 namespace EmployeeManagement.DAL.Repository
 {
@@ -9,23 +11,27 @@ namespace EmployeeManagement.DAL.Repository
         private readonly EmployeeDbContext _context;
         public EmployeeRepository(EmployeeDbContext context) { _context = context; }
 
-        public async Task<IEnumerable<Employee>> GetFilteredEmployeesAsync(string search, string sortColumn, bool ascending, int page, int pageSize)
+        public async Task<IEnumerable<Employee>> GetFilteredEmployeesAsync(string searchValue, string searchColumn)
         {
+            if (!string.IsNullOrEmpty(searchColumn))
+            {
+                var isValidColumn = typeof(Employee).GetProperties()
+                    .Any(p => p.Name.Equals(searchColumn)
+                    && p.PropertyType == typeof(string));
+                if (!isValidColumn)
+                {
+                    throw new ArgumentException($"Invalid Search column : {searchColumn}");
+                }
+            }
             var query = _context.Employees.AsQueryable();
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrWhiteSpace(searchValue) && !string.IsNullOrWhiteSpace(searchColumn))
             {
-                query = query.Where(e => e.Name.Contains(search));
+                query = query.Where(e =>
+                    EF.Property<string>(e, searchColumn).Contains(searchValue));
             }
 
-            if (!string.IsNullOrEmpty(sortColumn))
-            {
-                query = ascending
-                    ? query.OrderBy(e => EF.Property<object>(e, sortColumn))
-                    : query.OrderByDescending(e => EF.Property<object>(e, sortColumn));
-            }
-
-            return await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return await query.ToListAsync();
         }
         public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
         {

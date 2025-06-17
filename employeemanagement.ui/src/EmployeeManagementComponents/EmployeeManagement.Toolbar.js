@@ -10,6 +10,7 @@ import {
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import DescriptionIcon from "@mui/icons-material/Description";
+import GridOnIcon from "@mui/icons-material/GridOnOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 
 const EmployeeToolbar = ({
@@ -18,6 +19,7 @@ const EmployeeToolbar = ({
   multiDeleteDisabled,
   addDisabled,
   onDownloadPdf,
+  onDownloadExcel,
   onViewReport,
   setShowChart,
   searchValue,
@@ -31,7 +33,6 @@ const EmployeeToolbar = ({
       flexWrap="wrap"
       sx={{ mb: 2 }}
     >
-      {/* Left Buttons */}
       <Box display="flex" gap={1}>
         <Button
           variant="contained"
@@ -51,23 +52,31 @@ const EmployeeToolbar = ({
         </Button>
       </Box>
 
-      {/* Spacer to push right section */}
       <Box display="flex" alignItems="center" gap={1} ml="auto">
         <Tooltip title="View Charts">
           <IconButton onClick={setShowChart} color="primary">
             <InsertChartIcon />
           </IconButton>
         </Tooltip>
+
         <Tooltip title="Download PDF">
-          <IconButton onClick={onDownloadPdf} color="secondary">
+          <IconButton onClick={() => onDownloadPdf(searchValue)} color="secondary">
             <PictureAsPdfIcon />
           </IconButton>
         </Tooltip>
+
+        <Tooltip title="Download Excel">
+          <IconButton onClick={() => onDownloadExcel(searchValue)} color="success">
+            <GridOnIcon />
+          </IconButton>
+        </Tooltip>
+
         <Tooltip title="View Report">
-          <IconButton onClick={onViewReport} color="success">
+          <IconButton onClick={onViewReport} color="warning">
             <DescriptionIcon />
           </IconButton>
         </Tooltip>
+
         <TextField
           placeholder="Search"
           variant="outlined"
