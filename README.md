@@ -9,7 +9,7 @@ This application is a full-featured employee management system developed using *
 - **Form Validations**: Ensure data integrity with required fields, date rules, and salary checks.
 - **Age Auto-Calculation**: Automatically calculate age based on Date of Birth.
 - **Chart Visualizations**: Visualize salary by designation with Pie, Bar, and Line charts.
-- **PDF Report Generation**: Generate employee list as PDF using jsPDF/autoTable.
+- **PDF Report Generation**: Generate employee list as PDF using RDLC.
 - **Clean UI**: Styled with Material UI and Bootstrap for a modern look.
 
 ## 🏗️ Project Structure
@@ -38,6 +38,7 @@ The project follows a layered architecture with separate frontend and backend co
 
     Controllers/
       EmployeeController.cs     - REST API endpoints for employee CRUD operations
+      ReportsController.cs      - REST API endpoints for Reports (PDF, EXCEL)
     appsettings.json            - Configuration file (e.g., MySQL connection string)
     Program.cs                  - ASP.NET Core application entry point
 
@@ -153,7 +154,7 @@ Chart rendering is handled by [Chart.js](https://www.chartjs.org/) via the [reac
 
 - **Frontend**: React, Material UI, Bootstrap, Chart.js, react-chartjs-2
 - **Backend**: ASP.NET Core Web API, MySQL with Entity Framework Core
-- **Reporting**: jsPDF/autoTable for PDF generation
+- **Reporting**: RDLC for PDF and EXCEL Reports generation
 
 
 ## 📬 Contact
