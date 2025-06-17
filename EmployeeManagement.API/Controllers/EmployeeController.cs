@@ -14,11 +14,12 @@ namespace EmployeeManagement.API.Controllers
             _repo = repo;
         }
 
+        // Used in API level searching
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetEmployeesByFilter([FromQuery] string search = "", [FromQuery] string sortColumn = "",
-                                                      [FromQuery] bool ascending = true, [FromQuery] int page = 1)
+        public async Task<IActionResult> SearchDataBySearchParameter([FromQuery] string? searchValue, [FromQuery] string searchColumn = "Name" )
         {
-            var employees = await _repo.GetFilteredEmployeesAsync(search, sortColumn, ascending, page, 5);
+            var employees = await _repo.GetFilteredEmployeesAsync(searchValue, searchColumn);
+            employees.OrderByDescending(o => o.DateOfJoin);
             return Ok(employees);
         }
 

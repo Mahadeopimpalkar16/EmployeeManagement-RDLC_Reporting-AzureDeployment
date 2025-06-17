@@ -12,7 +12,7 @@ namespace EmployeeManagement.DAL.Models
         public decimal Salary { get; set; }
         public string Gender { get; set; }
         public string State { get; set; }
-        public DateTime? DateOfBirth { get; set; } // Optional field
+        public DateTime DateOfBirth { get; set; } // Optional field
     }
 
 }

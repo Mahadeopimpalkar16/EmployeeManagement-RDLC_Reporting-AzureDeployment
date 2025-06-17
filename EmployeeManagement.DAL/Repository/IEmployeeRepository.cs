@@ -4,7 +4,7 @@ namespace EmployeeManagement.DAL.Repository
 {
     public interface IEmployeeRepository
     {
-        Task<IEnumerable<Employee>> GetFilteredEmployeesAsync(string search = null, string sortColumn = null, bool ascending = true, int page = 1, int pageSize = 5);
+        Task<IEnumerable<Employee>> GetFilteredEmployeesAsync(string searchValue, string searchColumn );
         Task<Employee> GetEmployeeByIdAsync(int id);
         Task<IEnumerable<Employee>> GetAllEmployeesAsync();
         Task AddEmployeeAsync(Employee employee);
