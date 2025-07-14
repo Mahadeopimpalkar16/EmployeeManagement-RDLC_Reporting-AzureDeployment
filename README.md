@@ -1,162 +1,196 @@
-# 👨‍💼 Employee Management System (React + ASP.NET Core Web API)
+# 👨‍💼 Employee Management System with Azure Deployment(React + ASP.NET Core Web API)
 
-This application is a full-featured employee management system developed using **React** for the frontend and **ASP.NET Core Web API** for the backend. It supports CRUD operations, chart-based visualizations, live search, PDF reporting, and proper data validations.
+A production-ready employee management platform built with **React** and **ASP.NET Core Web API**, backed by ** MySQL on Azure Flexible Server**. It includes CRUD operations, advanced chart visualizations, PDF reporting via RDLC, and live search—all with responsive UI and clean architecture.
+
+---
 
 ## 🚀 Features
 
-- **Add / Edit / Delete Employees**: Manage employee records with ease.
-- **Live Search**: Search across all fields in real-time.
-- **Form Validations**: Ensure data integrity with required fields, date rules, and salary checks.
-- **Age Auto-Calculation**: Automatically calculate age based on Date of Birth.
-- **Chart Visualizations**: Visualize salary by designation with Pie, Bar, and Line charts.
-- **PDF Report Generation**: Generate employee list as PDF using RDLC.
-- **Clean UI**: Styled with Material UI and Bootstrap for a modern look.
+- Add / Edit / Delete Employees
+- Live Search across all fields
+- Age Auto-Calculation based on DOB
+- Salary-based Chart Visualizations (Pie, Bar, Line)
+- RDLC-powered PDF Reports (Employee listing)
+- Form Validations
+- Responsive UI using Material UI + Bootstrap
+
+---
+
+## 🧱 Architecture
+
+- **Frontend**: React + Material UI + Bootstrap  
+- **Backend**: ASP.NET Core Web API with EF Core  
+- **Database**: MySQL on Azure  
+- **Reports**: RDLC for PDF/Excel exports
+
+---
 
 ## 🏗️ Project Structure
-
-The project follows a layered architecture with separate frontend and backend components.
 
 ### Frontend (`employeemanagement.ui`)
 
     src/
       Components/
-        EmployeeChart.js        - Component for rendering charts (Pie, Bar, Line)
-        EmployeeChartDialog.js  - Dialog for showing charts in a popup
-        EmployeeForm.js         - Popup dialog for creating/editing employees
-        EmployeeList.js         - Table for displaying employee list
-        EmployeeManagement.js   - Main component orchestrating the app
-        EmployeeSearch.js       - Search functionality for employees
-        EmployeeToolbar.js      - Toolbar with action buttons
-        ReportDialog.js         - Dialog for PDF download functionality
-      App.js                    - Main React app entry point
-      index.js                  - React app entry point
-      index.css                 - Main CSS styles
+        EmployeeChart.js
+        EmployeeChartDialog.js
+        EmployeeForm.js
+        EmployeeList.js
+        EmployeeManagement.js
+        EmployeeSearch.js
+        EmployeeToolbar.js
+        ReportDialog.js
+      App.js
+      index.js
+      index.css
 
 ### Backend
 
-#### Business Logic Layer (`EmployeeManagement_API`)
+#### API Layer (`EmployeeManagement_API`)
 
     Controllers/
-      EmployeeController.cs     - REST API endpoints for employee CRUD operations
-      ReportsController.cs      - REST API endpoints for Reports (PDF, EXCEL)
-    appsettings.json            - Configuration file (e.g., MySQL connection string)
-    Program.cs                  - ASP.NET Core application entry point
+      EmployeeController.cs
+      ReportsController.cs
+    Program.cs
+    appsettings.json
 
-#### Data Access Layer (`EmployeeManagement_DAL`)
+#### Data Layer (`EmployeeManagement_DAL`)
 
     Data/
-      EmployeeDbContext.cs      - Database context for MySQL using EF Core
+      EmployeeDbContext.cs
     Models/
-      Employee.cs               - Employee model
-      States.cs                 - State model for dropdown
+      Employee.cs
+      States.cs
     Repository/
-      EmployeeRepository.cs     - Data access logic for employees
-      IEmployeeRepository.cs    - Interface for employee repository
+      EmployeeRepository.cs
+      IEmployeeRepository.cs
 
+---
 
 ## 🖥️ Backend Setup (ASP.NET Core Web API)
 
-### 1. 🧰 Required NuGet Packages
+### 📦 Required NuGet Packages
 
-Install these packages using the Package Manager Console in Visual Studio:
-
-#### For EmployeeManagement_API Project
+#### API Project
 
     Install-Package Swashbuckle.AspNetCore.Swagger -Version 8.1.4
     Install-Package Swashbuckle.AspNetCore.SwaggerGen -Version 8.1.4
     Install-Package Swashbuckle.AspNetCore.SwaggerUI -Version 8.1.4
 
-#### For EmployeeManagement_DAL Project
+#### DAL Project
 
     Install-Package Microsoft.EntityFrameworkCore -Version 8.0.13
     Install-Package Microsoft.EntityFrameworkCore.Design -Version 8.0.13
     Install-Package Microsoft.EntityFrameworkCore.Tools -Version 8.0.13
     Install-Package Pomelo.EntityFrameworkCore.MySql -Version 8.0.3
 
-### 2. 🔧 MySQL Configuration
+---
 
-Ensure MySQL is installed and running on your machine (e.g., via MySQL Server on `localhost:3306`).
+### 🔧 Connection String Configuration
 
-Update the `appsettings.json` file with your MySQL connection string:
+#### Local MySQL
 
-    "ConnectionStrings": {
-      "DefaultConnection": "Server=localhost;Database=EmployeeManagementDb;User=root;Password=YourPassword;"
-    }
+    "DefaultConnection": "Server=localhost;Database=EmployeeManagementDb;User=root;Password=YourPassword;"
 
-### 3. 🛠️ Database Setup with EF Core
+#### Azure MySQL
 
-Run the following commands in the Package Manager Console to create and apply migrations:
+    "DefaultConnection": "Server=employeemysqlservermp.mysql.database.azure.com;Port=3306;Database=EmployeeDB;Uid=myadmin;Pwd=Mp@143677;SslMode=Preferred;"
+
+---
+
+### 🧱 EF Core Migrations
 
     Add-Migration InitialCreate
     Update-Database
 
-This will create the `EmployeeManagementDb` database and necessary tables in MySQL.
+---
 
-### 4. 🌐 CORS Configuration (Optional)
+### 🌐 CORS Setup (Optional)
 
-If your frontend is hosted on a different domain/port (e.g., `localhost:3000`), enable CORS in the API project. Add the following to `Program.cs`:
+In `Program.cs`, allow React frontend access if hosted elsewhere (e.g., `http://localhost:3000`).
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAll", builder =>
-        {
-            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-        });
-    });
+---
 
-    app.UseCors("AllowAll");
+### ▶️ Run Backend
 
-### 5. ▶️ Run Backend
+1. Set `EmployeeManagement_API` as the startup project
+2. Run via Visual Studio (`F5`)
+3. Access Swagger UI at:
 
-1. Open the solution in Visual Studio.
-2. Set the Web API project as the startup project.
-3. Press `F5` or click **Start** to run the backend.
+    https://your-api-name.azurewebsites.net/swagger/index.html
 
-The backend will run at: [https://localhost:xxxx/api/employees](https://localhost:xxxx/api/employees)
+---
 
 ## ⚙️ Frontend Setup (React)
 
-### 1. 📁 Clone the Repository
+### 📁 Clone Repo
 
     git clone https://github.com/your-username/employee-management-app.git
     cd employee-management-app
 
-### 2. 📦 Install Node Modules
+### 📦 Install Dependencies
 
     npm install
 
-### 3. 🧩 Required Frontend Libraries
-
-Install the necessary libraries for React, Material UI, Bootstrap, and Chart.js:
+### 📦 Required Libraries
 
     npm install react-bootstrap bootstrap
     npm install @mui/material @emotion/react @emotion/styled
     npm install @mui/icons-material
     npm install chart.js react-chartjs-2
 
-### 4. ▶️ Start React App
+### ▶️ Start React App
 
     npm start
 
-The frontend will run at: [http://localhost:3000/](http://localhost:3000/)
+> App runs at: [http://localhost:3000](http://localhost:3000)
 
-## 📈 Charts (Salary by Designation)
+---
 
-The application supports the following chart types for visualizing salary by designation:
+## 📈 Chart Visualizations
 
-- **Pie Chart**
-- **Bar Chart**
-- **Line Chart**
+Rendered with `Chart.js` + `react-chartjs-2` for salary insights by designation:
+- Pie Chart  
+- Bar Chart  
+- Line Chart  
 
-Chart rendering is handled by [Chart.js](https://www.chartjs.org/) via the [react-chartjs-2](https://react-chartjs-2.js.org/) library.
+---
 
-## 🛠️ Technologies Used
+## 🧾 PDF Reporting
 
-- **Frontend**: React, Material UI, Bootstrap, Chart.js, react-chartjs-2
-- **Backend**: ASP.NET Core Web API, MySQL with Entity Framework Core
-- **Reporting**: RDLC for PDF and EXCEL Reports generation
+- RDLC-powered backend reports
+- Exports available via `ReportsController`
+- Generates PDFs of employee data
 
+---
+
+## ☁️ Azure Deployment
+
+### ✅ API Hosted at:
+
+    https://your-api-name.azurewebsites.net
+
+### ✅ Database Hosted at:
+
+    your-azure-dbname.mysql.database.azure.com
+
+---
+
+## 🚚 Migrate Local MySQL Data to Azure
+
+### 🔁 Export Local DB
+
+    mysqldump -u root -p employeemanagementdb > dump.sql
+
+### 📥 Import to Azure
+
+    mysql -h employeemysqlservermp.mysql.database.azure.com -P 3306 -u myadmin -p EmployeeDB < dump.sql
+
+---
 
 ## 📬 Contact
 
-For any inquiries, please reach out to [Mahadeopimpalkar6@gmail.com](mailto:your-email@example.com).
+For queries or support:  
+📧 [Mahadeopimpalkar6@gmail.com](mailto:Mahadeopimpalkar6@gmail.com)
+
+---
+
