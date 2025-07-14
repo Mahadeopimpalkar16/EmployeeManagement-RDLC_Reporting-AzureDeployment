@@ -1,8 +1,6 @@
 ﻿using EmployeeManagement.DAL.Data;
 using EmployeeManagement.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Buffers;
 
 namespace EmployeeManagement.DAL.Repository
 {
