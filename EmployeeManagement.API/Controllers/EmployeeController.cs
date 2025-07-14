@@ -76,7 +76,5 @@ namespace EmployeeManagement.API.Controllers
             var result = await _repo.GetAllStates();
             return Ok(result);
         }
-
-
     }
 }
