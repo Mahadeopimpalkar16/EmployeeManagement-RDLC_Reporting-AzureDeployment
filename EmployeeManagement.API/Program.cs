@@ -7,8 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure EF Core with your chosen provider (MySQL or PostgreSQL)
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    new MySqlServerVersion(new Version(8, 0, 25))));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 25)),
+        mysqlOptions => mysqlOptions.EnableRetryOnFailure()
+    ));
+
 
 // Register your repository for dependency injection
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -22,7 +26,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins("http://localhost:3000")
+            .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
