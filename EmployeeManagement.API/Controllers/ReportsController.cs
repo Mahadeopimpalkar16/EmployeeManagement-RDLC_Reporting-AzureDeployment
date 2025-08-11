@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.DAL.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Reporting.NETCore;
 
 namespace EmployeeManagement.API.Controllers
@@ -9,9 +10,11 @@ namespace EmployeeManagement.API.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepo;
-        public ReportsController(IEmployeeRepository employeeRepo )
+        private readonly ILogger _logger;
+        public ReportsController(IEmployeeRepository employeeRepo, ILogger logger )
         {
             _employeeRepo = employeeRepo;
+            _logger = logger;
         }
 
         private IActionResult GenerateReport(string? searchValue, string format, string fileName, string mimeType)
@@ -23,8 +26,13 @@ namespace EmployeeManagement.API.Controllers
                 .ToList();
 
             var report = new LocalReport();
-            report.ReportPath = Path.Combine(Directory.GetCurrentDirectory(), "Reports", "EmployeeReports.rdlc");
-
+            var reportPath = Path.Combine(Directory.GetCurrentDirectory(), "Reports", "EmployeeReports.rdlc");
+            if (!System.IO.File.Exists(reportPath))
+            {
+                _logger.LogError($"RDLC file not found at path: {reportPath}");
+                return StatusCode(500, "Report template missing");
+            }
+            report.ReportPath = reportPath;
             report.DataSources.Add(new ReportDataSource("EmployeeDataSet", employees)); // Dataset name must match RDLC
 
             string encoding, fileNameExtension;

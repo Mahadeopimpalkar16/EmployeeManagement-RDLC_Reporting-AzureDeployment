@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Reports\EmployeeReports.rdlc" />
+    <Content Include="Reports\EmployeeReports.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
