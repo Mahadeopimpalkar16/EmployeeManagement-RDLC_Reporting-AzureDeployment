@@ -11,7 +11,7 @@ namespace EmployeeManagement.API.Controllers
     {
         private readonly IEmployeeRepository _employeeRepo;
         private readonly ILogger _logger;
-        public ReportsController(IEmployeeRepository employeeRepo, ILogger logger )
+        public ReportsController(IEmployeeRepository employeeRepo, ILogger<ReportsController> logger )
         {
             _employeeRepo = employeeRepo;
             _logger = logger;
